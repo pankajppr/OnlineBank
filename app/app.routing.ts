@@ -2,6 +2,7 @@ import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './components/home.component';
 // import { UserAccountComponent } from './user-account/user-account.component';
 // import { PrimaryTransactionComponent } from './primary-transaction/primary-transaction.component';
 // import { SavingsTransactionComponent } from './savings-transaction/savings-transaction.component';
@@ -10,12 +11,16 @@ import { LoginComponent } from './login/login.component';
 const appRoutes: Routes = [
   {
     path: '',
-    redirectTo: '/login',
+    redirectTo: '/home',
     pathMatch: 'full'
   },
   {
   	path: 'login',
   	component: LoginComponent
+  },
+  {
+  	path: 'home',
+  	component: HomeComponent
   },
 //   {
 //   	path: 'userAccount',

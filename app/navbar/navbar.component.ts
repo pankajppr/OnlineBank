@@ -1,35 +1,52 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/login.service';
 import { Router } from '@angular/router';
+import {HomeService} from '../services/home.service';
+import {Token} from '../dto/token';
+import {Observable}  from 'rxjs/Observable';
+import {AccountEventsService} from '../account/account.events.service';
+import {SharedEventService} from '../services/sharedEvent.service';
+import {HelperService} from '../services/helper.service';
+
 
 @Component({
   moduleId: module.id,
   selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  //styleUrls: ['./navbar.component.css']
+  templateUrl: './navbar.component.html'
 })
 export class NavbarComponent implements OnInit {
 
-  loggedIn: boolean;
+	loggedIn: boolean;
+	token:Token;
+	constructor(private loginService: LoginService, 
+							private router : Router, 
+							private sharedEventservice: SharedEventService,
+							private helperService: HelperService) {
 
-	constructor(private loginService: LoginService, private router : Router) {
-		console.log("In NavbarComponent constructor---");
-		if(localStorage.getItem('PortalAdminHasLoggedIn') == '' || localStorage.getItem('PortalAdminHasLoggedIn') == null) {
-			this.loggedIn = false;
-		} else {
-			this.loggedIn = true;
-		}
+		if(localStorage.getItem('PortalAdminHasLoggedIn') == 'true'){
+						this.loggedIn = true;
+        }else{
+						this.loggedIn = false;
+						
+        }
+		
+		sharedEventservice.onMainEvent.subscribe(
+      (loggedIn:boolean) => {
+        this.loggedIn = loggedIn;
+      }
+   );
 	}
 
 	logout(){
-		this.loginService.logout().subscribe(
-			res => {
-				localStorage.setItem('PortalAdminHasLoggedIn', '');
-			},
-			err => console.log(err)
-			);
-		location.reload();
-		this.router.navigate(['/login']);
+					this.loginService.logout().subscribe(
+								res => {
+									this.loggedIn = false;
+									localStorage.setItem('PortalAdminHasLoggedIn', '');
+									this.sharedEventservice.onMainEvent.emit(false);
+							},
+						err => console.log(err)
+					);
+		this.router.navigateByUrl('/login');
 	}
 
 	getDisplay() {

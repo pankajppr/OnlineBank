@@ -1,4 +1,7 @@
   <div class="wrapper">
+    <div class="alert alert-danger" [hidden]="!loginError">
+    There was a problem logging in. Please try again.
+    </div>
     <form class="form-signin" (ngSubmit)="onSubmit()" [hidden]="loggedIn">       
       <h2 class="clean-font">Please login</h2>
 

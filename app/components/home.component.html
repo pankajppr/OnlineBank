@@ -1,0 +1,8 @@
+<h1>Greeting</h1>
+<div [hidden]="!loggedIn">
+    <p>The ID is {{id}}</p>
+    <p>The content is {{content}}</p>
+</div>
+<div  [hidden]="loggedIn">
+    <p>Login to see your greeting</p>
+</div>
